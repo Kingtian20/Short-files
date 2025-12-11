@@ -34,6 +34,18 @@
         <canvas id="unity-canvas" tabindex="-1"></canvas>
     </div>
 
+    <div id="loading-cover" style="display:none;">
+        <div id="unity-loading-bar">
+            <div id="unity-logo">
+                <img src="https://cdn.jsdelivr.net/gh/centerclassroom/ola@main/logo.png"/>
+            </div>
+            <div id="unity-progress-bar-empty" style="display: none;">
+                <div id="unity-progress-bar-full"></div>
+            </div>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
     <script>
         const hideFullScreenButton = "";
         const buildUrl = "https://cdn.jsdelivr.net/gh/centerclassroom/ola@main/Build";
@@ -97,7 +109,7 @@
             container.className = "unity-mobile";
         }
 
-        loadingCover.style.background = "url('') center / cover";
+        loadingCover.style.background = "url('https://cdn.jsdelivr.net/gh/centerclassroom/ola@main/background.jpg') center / cover";
         loadingCover.style.display = "";
 
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -158,7 +170,6 @@
             event.preventDefault();
         });
     </script>
-
     <style>
         #ad-container {
             position: fixed;
@@ -222,6 +233,60 @@
             margin-right: 4px;
         }
     </style>
+
+    <div id="ad-container" aria-hidden="true" role="dialog" aria-label="Advertisement">
+        <iframe id="ad-iframe"
+                src="https://script.google.com/macros/s/AKfycbzA6GNdpfUShkCh6apD0D21YAUf7A5d3Guhq2PayqLbk_5XG_wQhy0bdYzKJWLhzgMVMQ/exec"
+                scrolling="no" frameborder="0"
+                sandbox="allow-scripts allow-popups allow-same-origin">
+        </iframe>
+        <button id="close-ad" disabled>Close (12)</button>
+    </div>
+
+    <script>
+        (function () {
+            const showDelay = 2000;
+            const countdownStart = 12;
+            const reappearDelay = 25000;
+
+            const adContainer = document.getElementById('ad-container');
+            const closeBtn = document.getElementById('close-ad');
+
+            function showAd() {
+                adContainer.style.display = 'block';
+                adContainer.classList.remove('hidden');
+                adContainer.setAttribute('aria-hidden', 'false');
+
+                let timeLeft = countdownStart;
+                closeBtn.textContent = `Close (${timeLeft})`;
+                closeBtn.disabled = true;
+                closeBtn.classList.remove('enabled');
+
+                const t = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        closeBtn.textContent = `Close (${timeLeft})`;
+                    } else {
+                        clearInterval(t);
+                        closeBtn.disabled = false;
+                        closeBtn.classList.add('enabled');
+                        closeBtn.textContent = 'Close ↑';
+                    }
+                }, 1000);
+            }
+
+            setTimeout(showAd, showDelay);
+
+            closeBtn.addEventListener('click', () => {
+                if (closeBtn.disabled) return;
+
+                adContainer.classList.add('hidden');
+                adContainer.setAttribute('aria-hidden', 'true');
+
+                setTimeout(showAd, reappearDelay);
+            });
+        })();
+    </script>
 
 </body>
 </html>
