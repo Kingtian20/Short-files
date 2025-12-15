@@ -1,4 +1,3 @@
-<script type="text/javascript">
       var p8_allow_mobile_menu = true;
 
       var p8_autoplay = true;
